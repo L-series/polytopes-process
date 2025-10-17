@@ -63,11 +63,11 @@ PARQUET_TO_TEXT = parquet-to-text
 PARQUET_TO_TEXT_SRC = $(SRC_DIR)/parquet_to_text.c
 
 # PKG-CONFIG for Arrow and Parquet GLib libraries
-ARROW_CFLAGS = $(shell pkg-config --cflags arrow-glib parquet-glib)
-ARROW_LIBS = $(shell pkg-config --libs arrow-glib parquet-glib)
+ARROW_CFLAGS = $(shell PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$$PKG_CONFIG_PATH" pkg-config --cflags arrow-glib parquet-glib)
+ARROW_LIBS = $(shell PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$$PKG_CONFIG_PATH" pkg-config --libs arrow-glib parquet-glib)
 
 $(PARQUET_TO_TEXT): $(PARQUET_TO_TEXT_SRC)
-	$(CC) $(CFLAGS) $(ARROW_CFLAGS) -o $(PARQUET_TO_TEXT) $(PARQUET_TO_TEXT_SRC) $(ARROW_LIBS)
+	$(CC) $(CFLAGS) $(ARROW_CFLAGS) -Wl,-rpath,/usr/local/lib -o $(PARQUET_TO_TEXT) $(PARQUET_TO_TEXT_SRC) $(ARROW_LIBS)
 
 # Help
 help:
